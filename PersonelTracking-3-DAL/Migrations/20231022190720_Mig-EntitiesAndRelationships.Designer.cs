@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PersonelTracking_3_DAL;
+using PersonelTracking_3_DAL.Context;
 
 #nullable disable
 
 namespace PersonelTracking_3_DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231022152657_Mig-EntitiesAndRelationships")]
+    [Migration("20231022190720_Mig-EntitiesAndRelationships")]
     partial class MigEntitiesAndRelationships
     {
         /// <inheritdoc />
@@ -24,6 +24,30 @@ namespace PersonelTracking_3_DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("PersonelTracking_4_Entities.Concrete.Payroll", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("depositDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("employeeCompanyInfoID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("netSalaryAmount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("employeeCompanyInfoID");
+
+                    b.ToTable("Payrolls");
+                });
 
             modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.Certificate", b =>
                 {
@@ -164,12 +188,11 @@ namespace PersonelTracking_3_DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("birthCity")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("birthDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("birthPlace")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("employeeID")
                         .HasColumnType("int");
@@ -178,9 +201,8 @@ namespace PersonelTracking_3_DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("livingPlace")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("livingCity")
+                        .HasColumnType("int");
 
                     b.Property<int>("maritalStatus")
                         .HasColumnType("int");
@@ -285,6 +307,17 @@ namespace PersonelTracking_3_DAL.Migrations
                     b.ToTable("EmployeePersonalDocumnets");
                 });
 
+            modelBuilder.Entity("PersonelTracking_4_Entities.Concrete.Payroll", b =>
+                {
+                    b.HasOne("PersonelTracking_4_Entities.Contrete.EmployeeCompanyInfo", "employeeCompanyInfo")
+                        .WithMany("payrolls")
+                        .HasForeignKey("employeeCompanyInfoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("employeeCompanyInfo");
+                });
+
             modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.Certificate", b =>
                 {
                     b.HasOne("PersonelTracking_4_Entities.Contrete.EmployeeEducationInfo", "EmployeeEducationInfo")
@@ -369,6 +402,8 @@ namespace PersonelTracking_3_DAL.Migrations
             modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.EmployeeCompanyInfo", b =>
                 {
                     b.Navigation("dayOfs");
+
+                    b.Navigation("payrolls");
                 });
 
             modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.EmployeeEducationInfo", b =>

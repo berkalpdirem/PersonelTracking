@@ -12,10 +12,10 @@ namespace PersonelTracking_4_Entities.Contrete
     {
         public MaritalStatus maritalStatus { get; set; }
         public DateTime birthDate { get; set; }
-        public string birthPlace { get; set; }
+        public Cities birthCity { get; set; }
         public string motherName { get; set; }
         public string fatherName { get; set; }
-        public string livingPlace { get; set; }
+        public Cities livingCity { get; set; }
 
         #region Navigation Properties
         // Employee-EmployeeDetail Relation

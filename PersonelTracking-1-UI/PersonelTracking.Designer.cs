@@ -1,6 +1,6 @@
 ﻿namespace PersonelTracking_1_UI
 {
-    partial class Form1
+    partial class PersonelTracking
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,10 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            SuspendLayout();
+            // 
+            // PersonelTracking
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Name = "PersonelTracking";
+            Text = "Kayıt Ekranı";
+            ResumeLayout(false);
         }
 
         #endregion

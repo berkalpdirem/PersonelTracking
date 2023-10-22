@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PersonelTracking_4_Entities.Concrete;
 using PersonelTracking_4_Entities.Contrete;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PersonelTracking_3_DAL
+namespace PersonelTracking_3_DAL.Context
 {
     public class AppDbContext : DbContext
     {
@@ -19,7 +20,7 @@ namespace PersonelTracking_3_DAL
         public DbSet<Certificate> Certificates { get; set; }
         public DbSet<EmployeeCompanyInfo> EmployeeCompanyInfos { get; set; }
         public DbSet<DayOf> DayOfs { get; set; }
-
+        public DbSet<Payroll> Payrolls { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -48,6 +49,12 @@ namespace PersonelTracking_3_DAL
             mb.Entity<EmployeeCompanyInfo>()
               .HasKey(ecı => ecı.Id);
 
+            mb.Entity<DayOf>()
+              .HasKey(dayOf => dayOf.Id);
+
+            mb.Entity<Payroll>()
+              .HasKey(p => p.Id);
+            //-----------------------------------------------------------------------------------------------
             //Employee-EmployeeDetail Relation
             mb.Entity<Employee>()
               .HasOne(e => e.employeeDetail)
@@ -56,7 +63,7 @@ namespace PersonelTracking_3_DAL
 
             //Employee-EmployeePersonalDocumnet Relation
             mb.Entity<Employee>()
-              .HasOne(e=>e.employeePersonalDocumnet)
+              .HasOne(e => e.employeePersonalDocumnet)
               .WithOne(edoc => edoc.employee)
               .HasForeignKey<EmployeePersonalDocumnet>(edoc => edoc.employeeID);
 
@@ -64,12 +71,12 @@ namespace PersonelTracking_3_DAL
             mb.Entity<Employee>()
               .HasOne(e => e.employeeEducationInfo)
               .WithOne(eeı => eeı.employee)
-              .HasForeignKey<EmployeeEducationInfo>(eeı =>eeı.employeeID);
+              .HasForeignKey<EmployeeEducationInfo>(eeı => eeı.employeeID);
 
             // EmployeeEducation-Certificate Relation 
             mb.Entity<EmployeeEducationInfo>()
-              .HasMany(eeı => eeı.Certificates) 
-              .WithOne(c => c.EmployeeEducationInfo) 
+              .HasMany(eeı => eeı.Certificates)
+              .WithOne(c => c.EmployeeEducationInfo)
               .HasForeignKey(c => c.EmployeeEducationInfoId);
 
             // Employee-EmployeeCompanyInfo Relation
@@ -84,6 +91,11 @@ namespace PersonelTracking_3_DAL
               .WithOne(dayOf => dayOf.employeeCompanyInfo)
               .HasForeignKey(dayOf => dayOf.employeeCompanyInfoID);
 
+            //Payroll-EmployeeCompanyInfo Relation
+            mb.Entity<EmployeeCompanyInfo>()
+              .HasMany(ecı => ecı.payrolls)
+              .WithOne(p => p.employeeCompanyInfo)
+              .HasForeignKey(p => p.employeeCompanyInfoID);
         }
     }
 }

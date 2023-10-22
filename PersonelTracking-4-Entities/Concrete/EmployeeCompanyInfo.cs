@@ -1,5 +1,6 @@
 ﻿using PersonelTracking_4_Entities.Abstract;
 using PersonelTracking_4_Entities.Abstract.Enums;
+using PersonelTracking_4_Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace PersonelTracking_4_Entities.Contrete
         // DayOf-EmployeeCompanyInfo Relation
         public List<DayOf> dayOfs { get; set; }
 
+        //Payroll-EmployeeCompanyInfo Relation
+        public List<Payroll> payrolls { get; set; }
         #endregion
     }
 }

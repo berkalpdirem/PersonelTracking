@@ -65,10 +65,10 @@ namespace PersonelTracking_3_DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     maritalStatus = table.Column<int>(type: "int", nullable: false),
                     birthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    birthPlace = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    birthCity = table.Column<int>(type: "int", nullable: false),
                     motherName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     fatherName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    livingPlace = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    livingCity = table.Column<int>(type: "int", nullable: false),
                     employeeID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -156,6 +156,27 @@ namespace PersonelTracking_3_DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payrolls",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    netSalaryAmount = table.Column<int>(type: "int", nullable: false),
+                    depositDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    employeeCompanyInfoID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payrolls", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payrolls_EmployeeCompanyInfos_employeeCompanyInfoID",
+                        column: x => x.employeeCompanyInfoID,
+                        principalTable: "EmployeeCompanyInfos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Certificates",
                 columns: table => new
                 {
@@ -209,6 +230,11 @@ namespace PersonelTracking_3_DAL.Migrations
                 table: "EmployeePersonalDocumnets",
                 column: "employeeID",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payrolls_employeeCompanyInfoID",
+                table: "Payrolls",
+                column: "employeeCompanyInfoID");
         }
 
         /// <inheritdoc />
@@ -225,6 +251,9 @@ namespace PersonelTracking_3_DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "EmployeePersonalDocumnets");
+
+            migrationBuilder.DropTable(
+                name: "Payrolls");
 
             migrationBuilder.DropTable(
                 name: "EmployeeEducationInfos");
