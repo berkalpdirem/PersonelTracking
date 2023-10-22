@@ -17,6 +17,11 @@ namespace PersonelTracking_3_DAL
         public DbSet<EmployeePersonalDocumnet> EmployeePersonalDocumnets { get; set; }
         public DbSet<EmployeeEducationInfo> EmployeeEducationInfos { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
+        public DbSet<EmployeeCompanyInfo> EmployeeCompanyInfos { get; set; }
+        public DbSet<DayOf> DayOfs { get; set; }
+
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["PersonelTracking"].ConnectionString);
@@ -39,6 +44,10 @@ namespace PersonelTracking_3_DAL
 
             mb.Entity<Certificate>()
               .HasKey(c => c.Id);
+
+            mb.Entity<EmployeeCompanyInfo>()
+              .HasKey(ecı => ecı.Id);
+
             //Employee-EmployeeDetail Relation
             mb.Entity<Employee>()
               .HasOne(e => e.employeeDetail)
@@ -61,7 +70,19 @@ namespace PersonelTracking_3_DAL
             mb.Entity<EmployeeEducationInfo>()
               .HasMany(eeı => eeı.Certificates) 
               .WithOne(c => c.EmployeeEducationInfo) 
-              .HasForeignKey(c => c.EmployeeEducationInfoId); 
+              .HasForeignKey(c => c.EmployeeEducationInfoId);
+
+            // Employee-EmployeeCompanyInfo Relation
+            mb.Entity<Employee>()
+              .HasOne(e => e.employeeCompanyInfo)
+              .WithOne(ecı => ecı.employee)
+              .HasForeignKey<EmployeeCompanyInfo>(ecı => ecı.employeeId);
+
+            // DayOf-EmployeeCompanyInfo Relation
+            mb.Entity<EmployeeCompanyInfo>()
+              .HasMany(ecı => ecı.dayOfs)
+              .WithOne(dayOf => dayOf.employeeCompanyInfo)
+              .HasForeignKey(dayOf => dayOf.employeeCompanyInfoID);
 
         }
     }

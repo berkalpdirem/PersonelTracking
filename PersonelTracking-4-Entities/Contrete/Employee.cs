@@ -23,10 +23,12 @@ namespace PersonelTracking_4_Entities.Contrete
         public int employeePersonalDocumnetID { get; set; }
 
         //Employee-EmployeeEducationInfo Relation
-
         public EmployeeEducationInfo employeeEducationInfo { get; set; }
         public int employeeEducationInfoID { get; set; }
 
+        // Employee-EmployeeCompanyInfo Relation
+        public EmployeeCompanyInfo employeeCompanyInfo { get; set; }
+        public int employeeCompanyInfoID { get; set; }
         #endregion
 
     }

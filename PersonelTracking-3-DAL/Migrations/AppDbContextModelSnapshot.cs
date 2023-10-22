@@ -47,6 +47,33 @@ namespace PersonelTracking_3_DAL.Migrations
                     b.ToTable("Certificates");
                 });
 
+            modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.DayOf", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("dayOfEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("dayOfLenghtByDay")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("dayOfStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("employeeCompanyInfoID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("employeeCompanyInfoID");
+
+                    b.ToTable("DayOfs");
+                });
+
             modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.Employee", b =>
                 {
                     b.Property<int>("Id")
@@ -54,6 +81,9 @@ namespace PersonelTracking_3_DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("employeeCompanyInfoID")
+                        .HasColumnType("int");
 
                     b.Property<int>("employeeDetailID")
                         .HasColumnType("int");
@@ -78,6 +108,49 @@ namespace PersonelTracking_3_DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.EmployeeCompanyInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("dayOfCountRightCurrent")
+                        .HasColumnType("int");
+
+                    b.Property<int>("dayOfCountRightYearly")
+                        .HasColumnType("int");
+
+                    b.Property<int>("employeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("employeeStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("endDateOfWork")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("salary")
+                        .HasColumnType("int");
+
+                    b.Property<int>("seniority")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("startDateOfWork")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("unitOfWork")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("employeeId")
+                        .IsUnique();
+
+                    b.ToTable("EmployeeCompanyInfos");
                 });
 
             modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.EmployeeDetail", b =>
@@ -220,6 +293,28 @@ namespace PersonelTracking_3_DAL.Migrations
                     b.Navigation("EmployeeEducationInfo");
                 });
 
+            modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.DayOf", b =>
+                {
+                    b.HasOne("PersonelTracking_4_Entities.Contrete.EmployeeCompanyInfo", "employeeCompanyInfo")
+                        .WithMany("dayOfs")
+                        .HasForeignKey("employeeCompanyInfoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("employeeCompanyInfo");
+                });
+
+            modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.EmployeeCompanyInfo", b =>
+                {
+                    b.HasOne("PersonelTracking_4_Entities.Contrete.Employee", "employee")
+                        .WithOne("employeeCompanyInfo")
+                        .HasForeignKey("PersonelTracking_4_Entities.Contrete.EmployeeCompanyInfo", "employeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("employee");
+                });
+
             modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.EmployeeDetail", b =>
                 {
                     b.HasOne("PersonelTracking_4_Entities.Contrete.Employee", "employee")
@@ -255,6 +350,9 @@ namespace PersonelTracking_3_DAL.Migrations
 
             modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.Employee", b =>
                 {
+                    b.Navigation("employeeCompanyInfo")
+                        .IsRequired();
+
                     b.Navigation("employeeDetail")
                         .IsRequired();
 
@@ -263,6 +361,11 @@ namespace PersonelTracking_3_DAL.Migrations
 
                     b.Navigation("employeePersonalDocumnet")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.EmployeeCompanyInfo", b =>
+                {
+                    b.Navigation("dayOfs");
                 });
 
             modelBuilder.Entity("PersonelTracking_4_Entities.Contrete.EmployeeEducationInfo", b =>
