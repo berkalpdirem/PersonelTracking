@@ -1,4 +1,5 @@
 ﻿using PersonelTracking_4_Entities.Abstract;
+using PersonelTracking_4_Entities.Abstract.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace PersonelTracking_4_Entities.Contrete
         public int tcNo { get; set; }
         public string name { get; set; }
         public string surname { get; set; }
+        public DataStatus dataStatus { get; set; }
 
         #region Navigation Properties
         // Employee-EmployeeDetail Relation

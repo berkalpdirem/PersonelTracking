@@ -106,6 +106,9 @@ namespace PersonelTracking_3_DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("dataStatus")
+                        .HasColumnType("int");
+
                     b.Property<int>("employeeCompanyInfoID")
                         .HasColumnType("int");
 

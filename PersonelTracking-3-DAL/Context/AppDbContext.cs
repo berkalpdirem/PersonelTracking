@@ -54,7 +54,7 @@ namespace PersonelTracking_3_DAL.Context
 
             mb.Entity<Payroll>()
               .HasKey(p => p.Id);
-            //-----------------------------------------------------------------------------------------------
+            //---------------------------------------------------Relations--------------------------------------------
             //Employee-EmployeeDetail Relation
             mb.Entity<Employee>()
               .HasOne(e => e.employeeDetail)

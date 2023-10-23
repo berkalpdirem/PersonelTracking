@@ -12,8 +12,8 @@ using PersonelTracking_3_DAL.Context;
 namespace PersonelTracking_3_DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231022190720_Mig-EntitiesAndRelationships")]
-    partial class MigEntitiesAndRelationships
+    [Migration("20231022224048_MigDbInit")]
+    partial class MigDbInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -108,6 +108,9 @@ namespace PersonelTracking_3_DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("dataStatus")
+                        .HasColumnType("int");
 
                     b.Property<int>("employeeCompanyInfoID")
                         .HasColumnType("int");

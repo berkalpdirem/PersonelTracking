@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PersonelTracking_3_DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class MigEntitiesAndRelationships : Migration
+    public partial class MigDbInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,6 +20,7 @@ namespace PersonelTracking_3_DAL.Migrations
                     tcNo = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    dataStatus = table.Column<int>(type: "int", nullable: false),
                     employeeDetailID = table.Column<int>(type: "int", nullable: false),
                     employeePersonalDocumnetID = table.Column<int>(type: "int", nullable: false),
                     employeeEducationInfoID = table.Column<int>(type: "int", nullable: false),
@@ -64,11 +65,11 @@ namespace PersonelTracking_3_DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     maritalStatus = table.Column<int>(type: "int", nullable: false),
-                    birthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    livingCity = table.Column<int>(type: "int", nullable: false),
                     birthCity = table.Column<int>(type: "int", nullable: false),
+                    birthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     motherName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     fatherName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    livingCity = table.Column<int>(type: "int", nullable: false),
                     employeeID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

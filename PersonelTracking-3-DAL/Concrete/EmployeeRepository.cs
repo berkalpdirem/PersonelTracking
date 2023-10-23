@@ -17,10 +17,10 @@ namespace PersonelTracking_3_DAL.Concrete
         public EmployeeRepository(DbContext context) : base(context)
         {
             DbSetEmployee = context.Set<Employee>();
-            DbSetEmployeeDetail = context.Set<EmployeeDetail>();
+            DbSetEmployeeDetail= context.Set<EmployeeDetail>();
         }
 
-        public string RegisterEmployee(int TcNO, string Name, string SurName, MaritalStatus MartialStatus, DateTime BirthDate, string BirthPlace, string MotherName, string FatherName, Cities LivingCity)
+        public string RegisterEmployee(int TcNO, string Name, string SurName, MaritalStatus MartialStatus, Cities BirthCity, Cities LivingCity, DateTime BirthDate, string MotherName, string FatherName )
         {
             if (DbSetEmployee.Where(e => e.tcNo == TcNO).Any())
             {
@@ -28,24 +28,92 @@ namespace PersonelTracking_3_DAL.Concrete
             }
             else
             {
-                Employee newEmployee = new Employee()
+                try
                 {
-                    tcNo = TcNO,
-                    name = Name,
-                    surname = SurName,
-                    employeeDetail = new EmployeeDetail()
+                    Employee newEmployee = new Employee()
                     {
-                        maritalStatus = MartialStatus,
-                        birthDate = BirthDate,
-                        motherName = MotherName,
-                        fatherName = FatherName,
-                        livingCity = LivingCity
-                    }
-                };
-                Add(newEmployee);
-                return "Kayıt Başarılı";
-            }
+                        tcNo = TcNO,
+                        name = Name,
+                        surname = SurName,
+                        dataStatus = DataStatus.Current,
+                        employeeDetail = new EmployeeDetail()
+                        {
+                            maritalStatus = MartialStatus,
+                            birthCity = BirthCity,
+                            livingCity = LivingCity,
+                            birthDate = BirthDate,
+                            motherName = MotherName,
+                            fatherName = FatherName
+                        }
+                    };
+                    Add(newEmployee);
+                    return "Kayıt Başarılı";
+                }
+                catch (Exception)
+                {
 
+                    return "Kayıt Başarısız";
+                }
+               
+            }
+        }
+        public string DeleteEmployee(int ID)
+        {
+            try
+            {
+                var softDeleteData = Get(ID);
+                softDeleteData.dataStatus = DataStatus.SoftDeleted;
+                return "Silme İşlemi Başarılı";
+            }
+            catch (Exception)
+            {
+
+                return "Silme İşlemi Başarısız";
+            }
+        }
+        public string UpdateEmployee(int ID, int TcNO, string Name, string SurName, MaritalStatus MartialStatus, Cities BirthCity, Cities LivingCity, DateTime BirthDate, string MotherName, string FatherName)
+        {
+            var selectedEmployee = DbSetEmployee.Where(e => e.Id == ID).FirstOrDefault();
+            if (selectedEmployee == null)
+            {
+                return "Güncelleme Başarısız";
+            }
+            else
+            {
+                try
+                {
+                    selectedEmployee.tcNo = TcNO;
+                    selectedEmployee.name = Name;
+                    selectedEmployee.surname = SurName;
+
+                    var selectedEmployeeDetail = DbSetEmployeeDetail.Where(e => e.employeeID == ID).FirstOrDefault();
+
+                    selectedEmployeeDetail.maritalStatus = MartialStatus;
+                    selectedEmployeeDetail.birthCity = BirthCity;
+                    selectedEmployeeDetail.livingCity = LivingCity;
+                    selectedEmployeeDetail.birthDate = BirthDate;
+                    selectedEmployeeDetail.motherName = MotherName;
+                    selectedEmployeeDetail.fatherName = FatherName;
+
+                    Update(selectedEmployee);
+                    return "Güncelleme Başarılı";
+                }
+                catch (Exception)
+                {
+
+                    return "Güncelleme Başarısız";
+                }
+            }
+            
+        }
+        
+        public Employee GetEmployee(int TcNo)
+        {
+            return DbSetEmployee.Where(e => e.tcNo == TcNo).FirstOrDefault();
+        }
+        public List<Employee> ListEmployee()
+        {
+            return DbSetEmployee.ToList();
         }
     }
 }
