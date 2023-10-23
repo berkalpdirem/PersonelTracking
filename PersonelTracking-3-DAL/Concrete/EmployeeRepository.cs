@@ -61,8 +61,11 @@ namespace PersonelTracking_3_DAL.Concrete
         {
             try
             {
+                
                 var softDeleteData = Get(ID);
+                
                 softDeleteData.dataStatus = DataStatus.SoftDeleted;
+                DbContext.SaveChanges();
                 return "Silme İşlemi Başarılı";
             }
             catch (Exception)

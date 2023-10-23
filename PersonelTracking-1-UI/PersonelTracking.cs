@@ -39,27 +39,29 @@ namespace PersonelTracking_1_UI
             RefleshListBox();
         }
         #region Helper Methods
+        private void RefleshManagers()
+        {
+            employeeManager = employeeManager = new EmployeeManager(new GenericRepository<Employee>(new AppDbContext()), new EmployeeRepository(new AppDbContext()));
+            employeeDetailManager = new EmployeeDetailManager(new GenericRepository<EmployeeDetail>(new AppDbContext()), new EmployeeDetailRepository(new AppDbContext()));
+        }
         private void RefleshListBox()
         {
+            RefleshManagers();
             gb_Employee_Register_Employees_ListBox.Items.Clear();
-            
-            
+
             List<Employee> employeeList = employeeManager.GetAll();
-
-            gb_Employee_Register_Employees_ListBox.Items.Clear();
-            
-
             foreach (Employee employee in employeeList)
             {
                 if (employee.dataStatus != DataStatus.SoftDeleted)
                 {
-                    MessageBox.Show("Test");
                     gb_Employee_Register_Employees_ListBox.Items.Add(employee.tcNo + " " + employee.name + " " + employee.surname);
                 }
             }
         }
 
         #endregion
+
+
         private void gb_Employee_Register_Register_btn_Click(object sender, EventArgs e)
         {
             int tcNo = int.Parse(gb_Employee_Register_TcNo_tb.Text);
@@ -100,7 +102,7 @@ namespace PersonelTracking_1_UI
 
         private void gb_Employee_Register_Delete_btn_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(employeeManager.DeleteEmployee(1));
+            MessageBox.Show(employeeManager.DeleteEmployee(selectionID));
             gb_Employee_Register_Update_btn.Enabled = false;
             gb_Employee_Register_Delete_btn.Enabled = false;
             RefleshListBox();
@@ -133,5 +135,7 @@ namespace PersonelTracking_1_UI
                 gb_Employee_Register_Delete_btn.Enabled = true;
             }
         }
+
+
     }
 }

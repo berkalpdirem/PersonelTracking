@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonelTracking_3_DAL.Abstract;
 using PersonelTracking_4_Entities.Abstract;
+using PersonelTracking_4_Entities.Abstract.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace PersonelTracking_3_DAL.Concrete
         /// <param name="entity"></param>
         public void Delete(T entity)
         {
+            
             DbSet.Remove(entity);
             DbContext.SaveChanges();
         }
